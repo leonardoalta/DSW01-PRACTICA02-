@@ -1,50 +1,97 @@
-# [PROJECT_NAME] Constitution
-<!-- Example: Spec Constitution, TaskFlow Constitution, etc. -->
+<!--
+Sync Impact Report
+- Version change: 0.0.0 → 1.0.0
+- Modified principles:
+	- template placeholder principle 1 → I. Stack Baseline Mandatorio
+	- template placeholder principle 2 → II. Seguridad por Defecto con Basic Auth
+	- template placeholder principle 3 → III. Persistencia PostgreSQL en Docker
+	- template placeholder principle 4 → IV. Contrato API y Documentación OpenAPI
+	- template placeholder principle 5 → V. Calidad Automatizada y Entregabilidad
+- Added sections:
+	- Restricciones Técnicas Obligatorias
+	- Flujo de Desarrollo y Puertas de Calidad
+- Removed sections:
+	- Ninguna
+- Templates requiring updates:
+	- ✅ .specify/templates/plan-template.md
+	- ✅ .specify/templates/spec-template.md
+	- ✅ .specify/templates/tasks-template.md
+	- ⚠ pending: .specify/templates/commands/*.md (directorio no existe)
+- Follow-up TODOs:
+	- TODO(COMMAND_TEMPLATES): Crear .specify/templates/commands/ para validar referencias de comandos cuando el proyecto lo habilite.
+-->
+
+# Ejercicio3 Backend Constitution
 
 ## Core Principles
 
-### [PRINCIPLE_1_NAME]
-<!-- Example: I. Library-First -->
-[PRINCIPLE_1_DESCRIPTION]
-<!-- Example: Every feature starts as a standalone library; Libraries must be self-contained, independently testable, documented; Clear purpose required - no organizational-only libraries -->
+### I. Stack Baseline Mandatorio
+Toda implementación de backend MUST usar Spring Boot 3 con Java 17. Cambios de
+framework principal o versión LTS del lenguaje requieren enmienda de esta constitución.
+Rationale: mantener una base técnica única reduce complejidad operativa,
+inconsistencias de build y deuda de mantenimiento.
 
-### [PRINCIPLE_2_NAME]
-<!-- Example: II. CLI Interface -->
-[PRINCIPLE_2_DESCRIPTION]
-<!-- Example: Every library exposes functionality via CLI; Text in/out protocol: stdin/args → stdout, errors → stderr; Support JSON + human-readable formats -->
+### II. Seguridad por Defecto con Basic Auth
+Todo endpoint no público MUST protegerse con autenticación HTTP Basic en Spring Security.
+Para entornos de desarrollo y documentación interactiva, las credenciales base son
+usuario `admin` y contraseña `admin123`; en producción MUST reemplazarse por secretos
+gestionados externamente. Rationale: un baseline de seguridad explícito evita APIs
+anónimas por error y permite verificación temprana del control de acceso.
 
-### [PRINCIPLE_3_NAME]
-<!-- Example: III. Test-First (NON-NEGOTIABLE) -->
-[PRINCIPLE_3_DESCRIPTION]
-<!-- Example: TDD mandatory: Tests written → User approved → Tests fail → Then implement; Red-Green-Refactor cycle strictly enforced -->
+### III. Persistencia PostgreSQL en Docker
+La base de datos del proyecto MUST ser PostgreSQL y su ejecución local/integración MUST
+gestionarse con Docker (contenedor o compose). La aplicación MUST configurarse por
+propiedades de entorno para host, puerto, base de datos, usuario y contraseña.
+Rationale: estandarizar persistencia y entorno elimina diferencias entre máquinas y
+mejora reproducibilidad de despliegues.
 
-### [PRINCIPLE_4_NAME]
-<!-- Example: IV. Integration Testing -->
-[PRINCIPLE_4_DESCRIPTION]
-<!-- Example: Focus areas requiring integration tests: New library contract tests, Contract changes, Inter-service communication, Shared schemas -->
+### IV. Contrato API y Documentación OpenAPI
+Toda API HTTP MUST mantener documentación OpenAPI/Swagger accesible y sincronizada con
+el comportamiento real de controladores, modelos y respuestas de error. Endpoints nuevos
+o modificados MUST actualizar su contrato en el mismo cambio.
+Rationale: el contrato vivo reduce fricción entre backend, QA y consumidores.
 
-### [PRINCIPLE_5_NAME]
-<!-- Example: V. Observability, VI. Versioning & Breaking Changes, VII. Simplicity -->
-[PRINCIPLE_5_DESCRIPTION]
-<!-- Example: Text I/O ensures debuggability; Structured logging required; Or: MAJOR.MINOR.BUILD format; Or: Start simple, YAGNI principles -->
+### V. Calidad Automatizada y Entregabilidad
+Cada cambio MUST incluir pruebas automáticas proporcionales al riesgo (mínimo unitarias
+y, cuando aplique, integración de seguridad/persistencia). El pipeline MUST validar
+compilación, tests y configuración sin credenciales hardcodeadas fuera de valores de
+desarrollo aprobados por esta constitución.
+Rationale: calidad verificable y builds repetibles reducen regresiones y fallos tardíos.
 
-## [SECTION_2_NAME]
-<!-- Example: Additional Constraints, Security Requirements, Performance Standards, etc. -->
+## Restricciones Técnicas Obligatorias
 
-[SECTION_2_CONTENT]
-<!-- Example: Technology stack requirements, compliance standards, deployment policies, etc. -->
+- Runtime objetivo MUST ser Java 17.
+- Framework web MUST ser Spring Boot 3.x.
+- Persistencia relacional MUST ser PostgreSQL.
+- Aprovisionamiento local de base de datos MUST ejecutarse en Docker.
+- Documentación API MUST publicarse mediante OpenAPI/Swagger.
+- Configuración de conexión y seguridad SHOULD externalizarse con variables de entorno
+	y perfiles de Spring.
 
-## [SECTION_3_NAME]
-<!-- Example: Development Workflow, Review Process, Quality Gates, etc. -->
+## Flujo de Desarrollo y Puertas de Calidad
 
-[SECTION_3_CONTENT]
-<!-- Example: Code review requirements, testing gates, deployment approval process, etc. -->
+1. Toda especificación de feature MUST declarar impacto en seguridad, persistencia,
+	 contratos API y observabilidad.
+2. Todo plan técnico MUST pasar Constitution Check con evidencias concretas de:
+	 stack, autenticación, PostgreSQL en Docker, documentación Swagger y estrategia de test.
+3. Todo conjunto de tareas MUST incluir trabajo explícito para configuración de entorno,
+	 seguridad, documentación API y pruebas automatizadas.
+4. Todo PR MUST demostrar ejecución satisfactoria de build y tests relevantes antes de merge.
 
 ## Governance
-<!-- Example: Constitution supersedes all other practices; Amendments require documentation, approval, migration plan -->
 
-[GOVERNANCE_RULES]
-<!-- Example: All PRs/reviews must verify compliance; Complexity must be justified; Use [GUIDANCE_FILE] for runtime development guidance -->
+Esta constitución prevalece sobre prácticas locales no documentadas.
+Las enmiendas MUST incluir: motivación, impacto, tipo de cambio semántico de versión y
+actualización de plantillas afectadas.
 
-**Version**: [CONSTITUTION_VERSION] | **Ratified**: [RATIFICATION_DATE] | **Last Amended**: [LAST_AMENDED_DATE]
-<!-- Example: Version: 2.1.1 | Ratified: 2025-06-13 | Last Amended: 2025-07-16 -->
+Política de versionado de la constitución:
+- MAJOR: eliminación o redefinición incompatible de principios o gobernanza.
+- MINOR: adición de principio o expansión material de obligaciones.
+- PATCH: aclaraciones editoriales sin cambio normativo.
+
+Revisión de cumplimiento:
+- En planeación: verificación obligatoria del Constitution Check.
+- En implementación: trazabilidad entre tareas y principios aplicables.
+- En revisión: rechazo de cambios que incumplan principios no exentos.
+
+**Version**: 1.0.0 | **Ratified**: 2026-03-05 | **Last Amended**: 2026-03-05

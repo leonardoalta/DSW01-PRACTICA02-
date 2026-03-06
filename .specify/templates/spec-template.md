@@ -74,6 +74,8 @@
 
 - What happens when [boundary condition]?
 - How does system handle [error scenario]?
+- What happens when authentication credentials are missing or invalid?
+- How does system respond when PostgreSQL container is unavailable?
 
 ## Requirements *(mandatory)*
 
@@ -89,11 +91,15 @@
 - **FR-003**: Users MUST be able to [key interaction, e.g., "reset their password"]
 - **FR-004**: System MUST [data requirement, e.g., "persist user preferences"]
 - **FR-005**: System MUST [behavior, e.g., "log all security events"]
+- **FR-006**: System MUST enforce HTTP Basic authentication for protected endpoints.
+- **FR-007**: System MUST persist data in PostgreSQL and document required environment variables.
+- **FR-008**: System MUST provide and keep updated OpenAPI/Swagger documentation.
+- **FR-009**: System MUST define local execution strategy with Docker for database dependencies.
 
 *Example of marking unclear requirements:*
 
-- **FR-006**: System MUST authenticate users via [NEEDS CLARIFICATION: auth method not specified - email/password, SSO, OAuth?]
-- **FR-007**: System MUST retain user data for [NEEDS CLARIFICATION: retention period not specified]
+- **FR-010**: System MUST authenticate users via [NEEDS CLARIFICATION: additional auth methods beyond Basic not specified]
+- **FR-011**: System MUST retain user data for [NEEDS CLARIFICATION: retention period not specified]
 
 ### Key Entities *(include if feature involves data)*
 

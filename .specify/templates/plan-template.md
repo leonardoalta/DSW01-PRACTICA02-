@@ -31,7 +31,11 @@
 
 *GATE: Must pass before Phase 0 research. Re-check after Phase 1 design.*
 
-[Gates determined based on constitution file]
+- Stack gate: Confirma Spring Boot 3 + Java 17 como baseline de implementación.
+- Security gate: Define autenticación HTTP Basic y cobertura de pruebas de acceso.
+- Data gate: Confirma PostgreSQL y estrategia Docker para entorno local/integración.
+- API contract gate: Incluye impacto en OpenAPI/Swagger para endpoints nuevos o modificados.
+- Quality gate: Define pruebas automáticas (unitarias/integración) y validación de build.
 
 ## Project Structure
 
