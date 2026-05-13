@@ -17,14 +17,15 @@ class UpdateDeleteNotFoundIntegrationTest extends BaseIntegrationTest {
         EmpleadoUpdateRequest updateRequest = new EmpleadoUpdateRequest();
         updateRequest.setNombre("Nombre");
         updateRequest.setTelefono("5550000");
+        updateRequest.setEmail("nombre@ejercicio3.local");
 
-        mockMvc.perform(put("/api/empleados/NOPE")
-                        .with(httpBasic("admin", "admin123"))
+        mockMvc.perform(put("/api/v1/empleados/NOPE")
+                .with(httpBasic(AUTH_USER, AUTH_PASSWORD))
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(updateRequest)))
                 .andExpect(status().isNotFound());
 
-        mockMvc.perform(delete("/api/empleados/NOPE").with(httpBasic("admin", "admin123")))
+        mockMvc.perform(delete("/api/v1/empleados/NOPE").with(httpBasic(AUTH_USER, AUTH_PASSWORD)))
                 .andExpect(status().isNotFound());
     }
 }

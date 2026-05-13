@@ -13,11 +13,12 @@ class CreateEmpleadoSecurityIntegrationTest extends BaseIntegrationTest {
     @Test
     void shouldReturnUnauthorizedWithoutCredentials() throws Exception {
         EmpleadoCreateRequest request = new EmpleadoCreateRequest();
-        request.setClave("EMP001");
         request.setNombre("Juan Perez");
         request.setTelefono("5551234");
+        request.setEmail("juan.perez@ejercicio3.local");
+        request.setContrasena("clave1234");
 
-        mockMvc.perform(post("/api/empleados")
+        mockMvc.perform(post("/api/v1/empleados")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(request)))
                 .andExpect(status().isUnauthorized());

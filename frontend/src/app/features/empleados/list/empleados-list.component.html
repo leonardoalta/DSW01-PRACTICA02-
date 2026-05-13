@@ -1,0 +1,42 @@
+<main>
+  <section class="header-row">
+    <div>
+      <h1>Empleados</h1>
+      <p class="subtitle">Consulta y administra el personal registrado.</p>
+    </div>
+
+    <div class="actions">
+      <a *ngIf="isMaster" class="link-button" routerLink="/empleados/nuevo">Nuevo empleado</a>
+      <button class="btn-ghost" (click)="logout()">Cerrar sesión</button>
+    </div>
+  </section>
+
+  <p *ngIf="errorMessage" class="error">{{ errorMessage }}</p>
+
+  <section class="table-wrapper">
+    <table>
+      <thead>
+        <tr>
+          <th>Clave</th>
+          <th>Nombre</th>
+          <th>Teléfono</th>
+          <th>Email</th>
+          <th>Acciones</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let empleado of empleados">
+          <td>{{ empleado.clave }}</td>
+          <td>{{ empleado.nombre }}</td>
+          <td>{{ empleado.telefono }}</td>
+          <td>{{ empleado.email }}</td>
+          <td class="row-actions">
+            <a *ngIf="isMaster" [routerLink]="['/empleados', empleado.clave, 'editar']">Editar</a>
+            <button *ngIf="isMaster" class="btn-danger" (click)="delete(empleado.clave)">Eliminar</button>
+            <span *ngIf="!isMaster" class="readonly">Solo lectura</span>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </section>
+</main>

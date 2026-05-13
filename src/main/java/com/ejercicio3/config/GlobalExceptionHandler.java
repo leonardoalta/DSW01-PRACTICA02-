@@ -2,8 +2,10 @@ package com.ejercicio3.config;
 
 import com.ejercicio3.dto.ErrorResponse;
 import com.ejercicio3.exception.BadRequestException;
+import com.ejercicio3.exception.DepartamentoConflictException;
 import com.ejercicio3.exception.DuplicateClaveException;
 import com.ejercicio3.exception.InvalidStateException;
+import com.ejercicio3.exception.MasterAuthorizationException;
 import com.ejercicio3.exception.ResourceNotFoundException;
 import jakarta.validation.ConstraintViolationException;
 import java.util.stream.Collectors;
@@ -44,6 +46,12 @@ public class GlobalExceptionHandler {
                 .body(new ErrorResponse("DUPLICATE_CLAVE", ex.getMessage()));
     }
 
+    @ExceptionHandler(DepartamentoConflictException.class)
+    public ResponseEntity<ErrorResponse> handleDepartamentoConflict(DepartamentoConflictException ex) {
+        return ResponseEntity.status(HttpStatus.CONFLICT)
+                .body(new ErrorResponse("DEPARTAMENTO_CONFLICT", ex.getMessage()));
+    }
+
     @ExceptionHandler(ResourceNotFoundException.class)
     public ResponseEntity<ErrorResponse> handleNotFound(ResourceNotFoundException ex) {
         return ResponseEntity.status(HttpStatus.NOT_FOUND)
@@ -54,5 +62,11 @@ public class GlobalExceptionHandler {
     public ResponseEntity<ErrorResponse> handleConflict(InvalidStateException ex) {
         return ResponseEntity.status(HttpStatus.CONFLICT)
                 .body(new ErrorResponse("INVALID_STATE", ex.getMessage()));
+    }
+
+    @ExceptionHandler(MasterAuthorizationException.class)
+    public ResponseEntity<ErrorResponse> handleMasterAuthorization(MasterAuthorizationException ex) {
+        return ResponseEntity.status(HttpStatus.FORBIDDEN)
+                .body(new ErrorResponse("MASTER_FORBIDDEN", ex.getMessage()));
     }
 }

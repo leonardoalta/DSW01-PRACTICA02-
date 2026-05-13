@@ -32,7 +32,10 @@
 *GATE: Must pass before Phase 0 research. Re-check after Phase 1 design.*
 
 - Stack gate: Confirma Spring Boot 3 + Java 17 como baseline de implementación.
-- Security gate: Define autenticación HTTP Basic y cobertura de pruebas de acceso.
+- Frontend stack gate: Si el feature incluye UI web, define Angular en versión LTS vigente.
+- Data model identity gate: Define `clave` como PK de `Empleado` y como identificador canónico de autenticación.
+- Security gate: Define autenticación contra entidad Empleado (incluyendo contrasena segura) y cobertura de pruebas de acceso.
+- API versioning gate: Define versionado explícito de rutas (`/api/v{n}/...`) y compatibilidad.
 - Data gate: Confirma PostgreSQL y estrategia Docker para entorno local/integración.
 - API contract gate: Incluye impacto en OpenAPI/Swagger para endpoints nuevos o modificados.
 - Quality gate: Define pruebas automáticas (unitarias/integración) y validación de build.
@@ -73,9 +76,9 @@ tests/
 └── unit/
 
 # [REMOVE IF UNUSED] Option 2: Web application (when "frontend" + "backend" detected)
-backend/
+- Constitution Check: ¿El plan evidencia autenticación por email canónico (`Empleado.email`)?
 ├── src/
-│   ├── models/
+- ¿El plan evidencia persistencia de clave como PK y login por email?
 │   ├── services/
 │   └── api/
 └── tests/

@@ -17,19 +17,20 @@ class ListEmpleadosNoPaginationIntegrationTest extends BaseIntegrationTest {
     void shouldListAllActiveEmpleadosWithoutPagination() throws Exception {
         for (int i = 1; i <= 2; i++) {
             EmpleadoCreateRequest request = new EmpleadoCreateRequest();
-            request.setClave("EMP00" + i);
             request.setNombre("Empleado " + i);
             request.setTelefono("555000" + i);
+            request.setEmail("empleado.nopage." + i + "@ejercicio3.local");
+            request.setContrasena("clave1234");
 
-            mockMvc.perform(post("/api/empleados")
-                            .with(httpBasic("admin", "admin123"))
+            mockMvc.perform(post("/api/v1/empleados")
+                            .with(httpBasic(AUTH_USER, AUTH_PASSWORD))
                             .contentType(MediaType.APPLICATION_JSON)
                             .content(objectMapper.writeValueAsString(request)))
                     .andExpect(status().isCreated());
         }
 
-        mockMvc.perform(get("/api/empleados").with(httpBasic("admin", "admin123")))
+        mockMvc.perform(get("/api/v1/empleados").with(httpBasic(AUTH_USER, AUTH_PASSWORD)))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.length()").value(2));
+            .andExpect(jsonPath("$.length()").value(3));
     }
 }

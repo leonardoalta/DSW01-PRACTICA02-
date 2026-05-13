@@ -15,9 +15,9 @@ public class OpenApiConfig {
     public OpenAPI openAPI() {
         return new OpenAPI()
                 .info(new Info()
-                        .title("API CRUD Empleados")
+                        .title("API CRUD Empleados y Departamentos v1")
                         .version("1.0.0")
-                        .description("CRUD de empleados con eliminación lógica"))
+                        .description("CRUD de empleados y departamentos v1 con autenticación por entidad Empleado"))
                 .addSecurityItem(new SecurityRequirement().addList("basicAuth"))
                 .components(new Components().addSecuritySchemes("basicAuth",
                         new SecurityScheme()

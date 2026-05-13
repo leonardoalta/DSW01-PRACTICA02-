@@ -1,0 +1,27 @@
+<main>
+  <section class="form-card">
+    <h1>{{ isEdit ? 'Editar empleado' : 'Nuevo empleado' }}</h1>
+    <p class="subtitle">Completa los datos para {{ isEdit ? 'actualizar' : 'registrar' }} al empleado.</p>
+
+    <form (ngSubmit)="save()">
+      <label for="nombre">Nombre</label>
+      <input id="nombre" name="nombre" [(ngModel)]="payload.nombre" required maxlength="100" />
+
+      <label for="telefono">Teléfono</label>
+      <input id="telefono" name="telefono" [(ngModel)]="payload.telefono" required maxlength="100" />
+
+      <label for="email">Email</label>
+      <input id="email" name="email" type="email" [(ngModel)]="payload.email" required maxlength="150" />
+
+      <label for="contrasena">Contraseña {{ isEdit ? '(opcional)' : '' }}</label>
+      <input id="contrasena" name="contrasena" type="password" [(ngModel)]="payload.contrasena" [required]="!isEdit" />
+
+      <div class="actions">
+        <button type="submit">Guardar</button>
+        <a class="link-button btn-secondary" routerLink="/empleados">Volver</a>
+      </div>
+    </form>
+
+    <p *ngIf="errorMessage" class="error">{{ errorMessage }}</p>
+  </section>
+</main>

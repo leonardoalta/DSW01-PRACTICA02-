@@ -1,12 +1,10 @@
 package com.ejercicio3.dto;
 
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.Size;
 
 public class EmpleadoCreateRequest {
-
-    @NotBlank(message = "La clave es obligatoria")
-    private String clave;
 
     @NotBlank(message = "El nombre es obligatorio")
     @Size(max = 100, message = "El nombre no puede exceder 100 caracteres")
@@ -16,13 +14,14 @@ public class EmpleadoCreateRequest {
     @Size(max = 100, message = "El telefono no puede exceder 100 caracteres")
     private String telefono;
 
-    public String getClave() {
-        return clave;
-    }
+    @NotBlank(message = "El email es obligatorio")
+    @Email(message = "El email no tiene un formato válido")
+    @Size(max = 150, message = "El email no puede exceder 150 caracteres")
+    private String email;
 
-    public void setClave(String clave) {
-        this.clave = clave;
-    }
+    @NotBlank(message = "La contrasena es obligatoria")
+    @Size(min = 8, message = "La contrasena debe tener al menos 8 caracteres")
+    private String contrasena;
 
     public String getNombre() {
         return nombre;
@@ -38,5 +37,21 @@ public class EmpleadoCreateRequest {
 
     public void setTelefono(String telefono) {
         this.telefono = telefono;
+    }
+
+    public String getContrasena() {
+        return contrasena;
+    }
+
+    public void setContrasena(String contrasena) {
+        this.contrasena = contrasena;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
     }
 }

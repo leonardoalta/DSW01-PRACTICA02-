@@ -1,6 +1,6 @@
 # Tasks: CRUD de Empleados
 
-**Input**: Design documents from `/specs/001-crud-empleados/`
+**Input**: Design documents from `/specs/003-crud-empleados/`
 **Prerequisites**: plan.md (required), spec.md (required for user stories), research.md, data-model.md, contracts/
 
 **Tests**: Se incluyen tareas de pruebas automáticas porque el plan y la constitución exigen validación automatizada de seguridad, persistencia y contratos.
@@ -62,7 +62,7 @@
 - [X] T018 [US1] Implementar DTO de respuesta de empleado en `src/main/java/com/ejercicio3/dto/EmpleadoResponse.java`
 - [X] T019 [US1] Implementar lógica de alta y validación de duplicados en `src/main/java/com/ejercicio3/service/EmpleadoCommandService.java`
 - [X] T020 [US1] Implementar endpoint POST `/api/empleados` en `src/main/java/com/ejercicio3/controller/EmpleadoCommandController.java`
-- [X] T021 [US1] Actualizar contrato para alta y errores de creación en `specs/001-crud-empleados/contracts/empleados.openapi.yaml`
+- [X] T021 [US1] Actualizar contrato para alta y errores de creación en `specs/003-crud-empleados/contracts/empleados.openapi.yaml`
 
 **Checkpoint**: User Story 1 funcional y verificable de forma independiente
 
@@ -87,7 +87,7 @@
 - [X] T027 [US2] Implementar consultas de empleados activos y paginadas en `src/main/java/com/ejercicio3/service/EmpleadoQueryService.java`
 - [X] T028 [US2] Implementar endpoint GET `/api/empleados` y GET `/api/empleados/{clave}` en `src/main/java/com/ejercicio3/controller/EmpleadoQueryController.java`
 - [X] T029 [US2] Actualizar repositorio con consultas por `activo` y paginación en `src/main/java/com/ejercicio3/repository/EmpleadoRepository.java`
-- [X] T030 [US2] Actualizar contrato para listado paginado/no paginado en `specs/001-crud-empleados/contracts/empleados.openapi.yaml`
+- [X] T030 [US2] Actualizar contrato para listado paginado/no paginado en `specs/003-crud-empleados/contracts/empleados.openapi.yaml`
 
 **Checkpoint**: User Stories 1 y 2 funcionales e independientes
 
@@ -112,7 +112,7 @@
 - [X] T036 [US3] Implementar lógica de actualización y eliminación lógica en `src/main/java/com/ejercicio3/service/EmpleadoCommandService.java`
 - [X] T037 [US3] Implementar endpoints PUT/DELETE en `src/main/java/com/ejercicio3/controller/EmpleadoCommandController.java`
 - [X] T038 [US3] Actualizar manejo de errores de conflicto de estado en `src/main/java/com/ejercicio3/config/GlobalExceptionHandler.java`
-- [X] T039 [US3] Actualizar contrato para update/delete y conflicto 409 en `specs/001-crud-empleados/contracts/empleados.openapi.yaml`
+- [X] T039 [US3] Actualizar contrato para update/delete y conflicto 409 en `specs/003-crud-empleados/contracts/empleados.openapi.yaml`
 
 **Checkpoint**: Todas las historias funcionales de forma independiente
 
@@ -122,9 +122,9 @@
 
 **Purpose**: Endurecimiento y validación transversal.
 
-- [X] T040 [P] Actualizar guía de ejecución y verificación manual en `specs/001-crud-empleados/quickstart.md`
-- [X] T041 Ejecutar suite completa y ajustar documentación de resultados en `specs/001-crud-empleados/quickstart.md`
-- [X] T042 [P] Verificar consistencia final de contrato OpenAPI en `specs/001-crud-empleados/contracts/empleados.openapi.yaml`
+- [X] T040 [P] Actualizar guía de ejecución y verificación manual en `specs/003-crud-empleados/quickstart.md`
+- [X] T041 Ejecutar suite completa y ajustar documentación de resultados en `specs/003-crud-empleados/quickstart.md`
+- [X] T042 [P] Verificar consistencia final de contrato OpenAPI en `specs/003-crud-empleados/contracts/empleados.openapi.yaml`
 - [X] T043 [P] Añadir logging estructurado de operaciones CRUD en `src/main/java/com/ejercicio3/service/EmpleadoCommandService.java`
 
 ---

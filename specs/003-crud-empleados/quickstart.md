@@ -28,19 +28,19 @@ mvn spring-boot:run
 ```
 
 ## 4) Verificar autenticación
-- Usuario: `admin`
-- Contraseña: `admin123`
+- Usuario: `Empleado` activo (identificador de autenticación definido por la implementación)
+- Contraseña: valor de `contrasena` del `Empleado` (almacenada de forma segura)
 
 Ejemplo de verificación:
 
 ```bash
-curl -u admin:admin123 http://localhost:8080/api/empleados
+curl -u <empleado_usuario>:<empleado_contrasena> http://localhost:8080/api/v1/empleados
 ```
 
 Verificar modo paginado (5 por página):
 
 ```bash
-curl -u admin:admin123 "http://localhost:8080/api/empleados?page=0"
+curl -u <empleado_usuario>:<empleado_contrasena> "http://localhost:8080/api/v1/empleados?page=0"
 ```
 
 Comportamiento esperado:

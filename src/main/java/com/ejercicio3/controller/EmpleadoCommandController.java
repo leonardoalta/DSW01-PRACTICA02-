@@ -16,7 +16,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping("/api/empleados")
+@RequestMapping("${app.api.base-path:/api/v1}/empleados")
 public class EmpleadoCommandController {
 
     private final EmpleadoCommandService empleadoCommandService;

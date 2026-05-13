@@ -17,21 +17,22 @@ class ListEmpleadosPaginationIntegrationTest extends BaseIntegrationTest {
     void shouldListEmpleadosWithFixedPageSizeFive() throws Exception {
         for (int i = 1; i <= 6; i++) {
             EmpleadoCreateRequest request = new EmpleadoCreateRequest();
-            request.setClave(String.format("EMP%03d", i));
             request.setNombre("Empleado " + i);
             request.setTelefono("555000" + i);
+            request.setEmail("empleado.page." + i + "@ejercicio3.local");
+            request.setContrasena("clave1234");
 
-            mockMvc.perform(post("/api/empleados")
-                            .with(httpBasic("admin", "admin123"))
+                mockMvc.perform(post("/api/v1/empleados")
+                        .with(httpBasic(AUTH_USER, AUTH_PASSWORD))
                             .contentType(MediaType.APPLICATION_JSON)
                             .content(objectMapper.writeValueAsString(request)))
                     .andExpect(status().isCreated());
         }
 
-        mockMvc.perform(get("/api/empleados?page=0").with(httpBasic("admin", "admin123")))
+            mockMvc.perform(get("/api/v1/empleados?page=0").with(httpBasic(AUTH_USER, AUTH_PASSWORD)))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.size").value(5))
                 .andExpect(jsonPath("$.content.length()").value(5))
-                .andExpect(jsonPath("$.totalElements").value(6));
+                .andExpect(jsonPath("$.totalElements").value(7));
     }
 }

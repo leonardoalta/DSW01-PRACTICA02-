@@ -75,7 +75,10 @@
 - What happens when [boundary condition]?
 - How does system handle [error scenario]?
 - What happens when authentication credentials are missing or invalid?
+- What happens when an authenticated `Empleado` is inactive or has invalid `contrasena`?
+- What happens when a request targets an API version not soportada?
 - How does system respond when PostgreSQL container is unavailable?
+- What happens when frontend Angular and backend API version are desalineados?
 
 ## Requirements *(mandatory)*
 
@@ -91,15 +94,20 @@
 - **FR-003**: Users MUST be able to [key interaction, e.g., "reset their password"]
 - **FR-004**: System MUST [data requirement, e.g., "persist user preferences"]
 - **FR-005**: System MUST [behavior, e.g., "log all security events"]
-- **FR-006**: System MUST enforce HTTP Basic authentication for protected endpoints.
-- **FR-007**: System MUST persist data in PostgreSQL and document required environment variables.
-- **FR-008**: System MUST provide and keep updated OpenAPI/Swagger documentation.
-- **FR-009**: System MUST define local execution strategy with Docker for database dependencies.
+- **FR-006**: System MUST authenticate protected endpoints using the `Empleado` entity.
+- **FR-007**: System MUST include `contrasena` in the identity model and store it securely (non-plaintext).
+- **FR-008**: System MUST publish API endpoints using explicit URL versioning (e.g., `/api/v1/...`).
+- **FR-009**: System MUST persist data in PostgreSQL and document required environment variables.
+- **FR-010**: System MUST provide and keep updated OpenAPI/Swagger documentation aligned with versioned routes.
+- **FR-011**: System MUST define local execution strategy with Docker for database dependencies.
+- **FR-012**: System MUST define `clave` as the primary key (PK) of `Empleado` and use it as canonical identity key.
+- **FR-013**: If the feature includes a web frontend, system MUST implement it using Angular in LTS version.
+- **FR-014**: Frontend features MUST consume versioned backend APIs and document integration contract by environment.
 
 *Example of marking unclear requirements:*
 
-- **FR-010**: System MUST authenticate users via [NEEDS CLARIFICATION: additional auth methods beyond Basic not specified]
-- **FR-011**: System MUST retain user data for [NEEDS CLARIFICATION: retention period not specified]
+- **FR-015**: System MUST authenticate users via [NEEDS CLARIFICATION: specific credential flow/token strategy beyond baseline not specified]
+- **FR-016**: System MUST retain user data for [NEEDS CLARIFICATION: retention period not specified]
 
 ### Key Entities *(include if feature involves data)*
 

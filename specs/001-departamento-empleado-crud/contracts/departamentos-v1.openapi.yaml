@@ -1,0 +1,276 @@
+openapi: 3.0.3
+info:
+  title: API Departamentos v1
+  version: 1.0.0
+  description: Contrato de CRUD de departamentos y relación con empleados.
+servers:
+  - url: http://localhost:8080
+security:
+  - basicAuth: []
+paths:
+  /api/v1/departamentos:
+    get:
+      summary: Listar departamentos
+      operationId: listDepartamentosV1
+      responses:
+        '200':
+          description: Lista de departamentos con cantidad de empleados
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/DepartamentoResumenResponse'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+    post:
+      summary: Crear departamento
+      operationId: createDepartamentoV1
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/DepartamentoCreateRequest'
+      responses:
+        '201':
+          description: Departamento creado
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DepartamentoResponse'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '409':
+          description: Nombre de departamento duplicado
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+
+  /api/v1/departamentos/{id}:
+    parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int64
+    get:
+      summary: Obtener detalle de departamento
+      operationId: getDepartamentoByIdV1
+      responses:
+        '200':
+          description: Detalle de departamento con empleados asociados
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DepartamentoDetalleResponse'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '404':
+          $ref: '#/components/responses/NotFound'
+    put:
+      summary: Actualizar departamento
+      operationId: updateDepartamentoV1
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/DepartamentoUpdateRequest'
+      responses:
+        '200':
+          description: Departamento actualizado
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DepartamentoResponse'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '409':
+          description: Nombre duplicado
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+    delete:
+      summary: Eliminar departamento
+      operationId: deleteDepartamentoV1
+      responses:
+        '204':
+          description: Departamento eliminado
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '409':
+          description: Departamento tiene empleados asociados
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+
+  /api/v1/departamentos/{departamentoId}/empleados/{claveEmpleado}:
+    put:
+      summary: Asignar o reasignar empleado a departamento
+      operationId: assignEmpleadoToDepartamentoV1
+      parameters:
+        - name: departamentoId
+          in: path
+          required: true
+          schema:
+            type: integer
+            format: int64
+        - name: claveEmpleado
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Relación asignada correctamente
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AsignacionDepartamentoResponse'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '404':
+          $ref: '#/components/responses/NotFound'
+
+components:
+  securitySchemes:
+    basicAuth:
+      type: http
+      scheme: basic
+  schemas:
+    DepartamentoCreateRequest:
+      type: object
+      required: [nombre]
+      properties:
+        nombre:
+          type: string
+          minLength: 1
+          maxLength: 100
+        descripcion:
+          type: string
+          maxLength: 255
+      additionalProperties: false
+
+    DepartamentoUpdateRequest:
+      type: object
+      required: [nombre]
+      properties:
+        nombre:
+          type: string
+          minLength: 1
+          maxLength: 100
+        descripcion:
+          type: string
+          maxLength: 255
+      additionalProperties: false
+
+    DepartamentoResponse:
+      type: object
+      required: [id, nombre]
+      properties:
+        id:
+          type: integer
+          format: int64
+        nombre:
+          type: string
+        descripcion:
+          type: string
+
+    DepartamentoResumenResponse:
+      type: object
+      required: [id, nombre, cantidadEmpleados]
+      properties:
+        id:
+          type: integer
+          format: int64
+        nombre:
+          type: string
+        descripcion:
+          type: string
+        cantidadEmpleados:
+          type: integer
+          minimum: 0
+
+    EmpleadoResumenResponse:
+      type: object
+      required: [clave, nombre, telefono]
+      properties:
+        clave:
+          type: string
+        nombre:
+          type: string
+        telefono:
+          type: string
+
+    DepartamentoDetalleResponse:
+      type: object
+      required: [id, nombre, cantidadEmpleados, empleados]
+      properties:
+        id:
+          type: integer
+          format: int64
+        nombre:
+          type: string
+        descripcion:
+          type: string
+        cantidadEmpleados:
+          type: integer
+          minimum: 0
+        empleados:
+          type: array
+          items:
+            $ref: '#/components/schemas/EmpleadoResumenResponse'
+
+    AsignacionDepartamentoResponse:
+      type: object
+      required: [claveEmpleado, departamentoId, departamentoNombre]
+      properties:
+        claveEmpleado:
+          type: string
+        departamentoId:
+          type: integer
+          format: int64
+        departamentoNombre:
+          type: string
+
+    ErrorResponse:
+      type: object
+      required: [code, message]
+      properties:
+        code:
+          type: string
+        message:
+          type: string
+
+  responses:
+    BadRequest:
+      description: Error de validación
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+    Unauthorized:
+      description: Credenciales inválidas o ausentes
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+    NotFound:
+      description: Recurso no encontrado
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'

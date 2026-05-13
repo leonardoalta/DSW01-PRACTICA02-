@@ -1,0 +1,19 @@
+<main class="login-shell">
+  <section class="login-card">
+    <p class="badge">Gestión interna</p>
+    <h1>Iniciar sesión</h1>
+    <p class="subtitle">Ingresa con tu email y contraseña para administrar empleados.</p>
+
+    <form (ngSubmit)="submit()">
+      <label for="email">Email</label>
+      <input id="email" name="email" type="email" [(ngModel)]="email" required />
+
+      <label for="contrasena">Contraseña</label>
+      <input id="contrasena" name="contrasena" type="password" [(ngModel)]="contrasena" required />
+
+      <button type="submit" [disabled]="loading">Entrar</button>
+    </form>
+
+    <p *ngIf="errorMessage" class="error">{{ errorMessage }}</p>
+  </section>
+</main>
