@@ -11,7 +11,7 @@ class ListEmpleadosInvalidPageIntegrationTest extends BaseIntegrationTest {
 
     @Test
     void shouldReturnBadRequestForInvalidPage() throws Exception {
-        mockMvc.perform(get("/api/empleados?page=-1").with(httpBasic("admin", "admin123")))
+        mockMvc.perform(get("/api/v1/empleados?page=-1").with(httpBasic(AUTH_USER, AUTH_PASSWORD)))
                 .andExpect(status().isBadRequest());
     }
 }

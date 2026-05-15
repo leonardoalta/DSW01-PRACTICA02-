@@ -15,18 +15,20 @@ class CreateEmpleadoIntegrationTest extends BaseIntegrationTest {
     @Test
     void shouldCreateEmpleadoSuccessfully() throws Exception {
         EmpleadoCreateRequest request = new EmpleadoCreateRequest();
-        request.setClave("EMP001");
         request.setNombre("Juan Perez");
         request.setTelefono("5551234");
+        request.setEmail("juan.perez@ejercicio3.local");
+        request.setContrasena("clave1234");
 
-        mockMvc.perform(post("/api/empleados")
-                        .with(httpBasic("admin", "admin123"))
+        mockMvc.perform(post("/api/v1/empleados")
+                .with(httpBasic(AUTH_USER, AUTH_PASSWORD))
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(request)))
                 .andExpect(status().isCreated())
-                .andExpect(jsonPath("$.clave").value("EMP001"))
+                    .andExpect(jsonPath("$.clave").isNotEmpty())
                 .andExpect(jsonPath("$.nombre").value("Juan Perez"))
                 .andExpect(jsonPath("$.telefono").value("5551234"))
+                    .andExpect(jsonPath("$.email").value("juan.perez@ejercicio3.local"))
                 .andExpect(jsonPath("$.activo").value(true));
     }
 }

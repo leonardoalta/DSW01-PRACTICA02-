@@ -1,0 +1,40 @@
+.form-card {
+  max-width: 620px;
+  margin: 0 auto;
+  padding: 1.2rem;
+  border-radius: 14px;
+  border: 1px solid #e5e7eb;
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.97), rgba(236, 253, 245, 0.9));
+}
+
+.subtitle {
+  margin-top: -0.4rem;
+  margin-bottom: 1rem;
+  color: #4b5563;
+}
+
+form {
+  display: grid;
+  gap: 0.75rem;
+}
+
+label {
+  font-size: 0.9rem;
+  font-weight: 600;
+}
+
+.actions {
+  margin-top: 0.5rem;
+  display: flex;
+  gap: 0.7rem;
+}
+
+.btn-secondary {
+  background: linear-gradient(135deg, #0ea5e9, #2563eb);
+}
+
+.error {
+  margin-top: 0.9rem;
+  color: #be123c;
+  font-weight: 600;
+}

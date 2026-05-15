@@ -1,6 +1,6 @@
 # Feature Specification: CRUD de Empleados
 
-**Feature Branch**: `001-crud-empleados`  
+**Feature Branch**: `002-constitucion-v2-auth-api`  
 **Created**: 2026-03-05  
 **Status**: Draft  
 **Input**: User description: "crear un crud de empleados con los campos clave,nombre y telefono.Donde clave sea el pk, y los demas campos sean de 100 espacios"
@@ -11,6 +11,10 @@
 
 - Q: ¿La eliminación de empleados debe ser física o lógica? → A: Eliminación lógica (marcar registro como eliminado/inactivo).
 - Q: ¿Cómo debe comportarse la paginación del listado? → A: Paginación opcional; si no se envía paginación devuelve todo, y cuando se envía usa 5 registros por página.
+
+### Session 2026-03-06
+
+- Q: ¿Cómo se define y captura la clave del empleado? → A: La `clave` será PK autogenerada por el sistema y no se debe solicitar al registrar un empleado.
 
 ## User Scenarios & Testing *(mandatory)*
 
@@ -29,7 +33,7 @@
 
 ### User Story 1 - Registrar empleados (Priority: P1)
 
-Como administrador del sistema, quiero registrar un empleado con clave, nombre y teléfono, para iniciar su gestión en el sistema.
+Como administrador del sistema, quiero registrar un empleado con nombre y teléfono, para iniciar su gestión en el sistema con una clave asignada automáticamente.
 
 **Why this priority**: Sin creación de empleados no existe dato base para consultar, actualizar o eliminar, por lo que bloquea el resto del valor del CRUD.
 
@@ -37,9 +41,9 @@ Como administrador del sistema, quiero registrar un empleado con clave, nombre y
 
 **Acceptance Scenarios**:
 
-1. **Given** un administrador autenticado y una clave no registrada, **When** registra un empleado con nombre y teléfono válidos, **Then** el sistema crea el empleado y confirma la operación.
-2. **Given** un administrador autenticado, **When** intenta registrar un empleado con una clave ya existente, **Then** el sistema rechaza la operación e informa conflicto de duplicidad.
-3. **Given** un administrador autenticado, **When** intenta registrar nombre o teléfono con más de 100 caracteres, **Then** el sistema rechaza la solicitud con error de validación.
+1. **Given** un administrador autenticado, **When** registra un empleado con nombre y teléfono válidos, **Then** el sistema crea el empleado, genera automáticamente la `clave` y la retorna en la respuesta.
+2. **Given** un administrador autenticado, **When** intenta registrar nombre o teléfono con más de 100 caracteres, **Then** el sistema rechaza la solicitud con error de validación.
+3. **Given** un administrador autenticado, **When** intenta enviar manualmente el campo `clave` en el alta, **Then** el sistema ignora o rechaza ese valor según contrato y conserva la generación automática.
 
 ---
 
@@ -84,10 +88,10 @@ Como administrador del sistema, quiero actualizar nombre o teléfono y eliminar 
   Fill them out with the right edge cases.
 -->
 
-- Intento de crear empleado con clave vacía o nula.
+- Intento de crear empleado enviando `clave` manual cuando debe autogenerarse.
 - Intento de actualizar empleado sin enviar cambios en nombre ni teléfono.
 - Solicitud sin credenciales o con credenciales incorrectas.
-- Petición concurrente de alta con la misma clave (debe prevalecer unicidad).
+- Fallo del generador de `clave` o colisión excepcional en generación automática.
 - Solicitud de eliminación sobre un empleado ya eliminado lógicamente.
 - Indisponibilidad temporal del sistema de persistencia de datos.
 - Parámetros de paginación inválidos (negativos, cero o no numéricos).
@@ -101,8 +105,8 @@ Como administrador del sistema, quiero actualizar nombre o teléfono y eliminar 
 
 ### Functional Requirements
 
-- **FR-001**: El sistema MUST permitir crear empleados con los campos `clave`, `nombre` y `telefono`.
-- **FR-002**: `clave` MUST ser obligatoria y única en todo el sistema.
+- **FR-001**: El sistema MUST permitir crear empleados con los campos `nombre` y `telefono`.
+- **FR-002**: `clave` MUST ser la llave primaria (PK), MUST ser única y MUST autogenerarse al crear empleados.
 - **FR-003**: `nombre` MUST ser obligatorio y aceptar hasta 100 caracteres.
 - **FR-004**: `telefono` MUST ser obligatorio y aceptar hasta 100 caracteres.
 - **FR-005**: El sistema MUST permitir consultar la lista de empleados y consultar un empleado por su `clave`.
@@ -112,8 +116,10 @@ Como administrador del sistema, quiero actualizar nombre o teléfono y eliminar 
 - **FR-009**: El sistema MUST responder con resultado de no encontrado para consultas, actualizaciones o eliminaciones con `clave` inexistente.
 - **FR-016**: El sistema MUST excluir por defecto de listados y consultas operativas a los empleados eliminados lógicamente.
 - **FR-017**: El sistema MUST responder con conflicto de estado cuando se solicite eliminar lógicamente un empleado ya eliminado.
-- **FR-010**: El sistema MUST proteger los endpoints del CRUD mediante autenticación de usuario y contraseña.
-- **FR-011**: El sistema MUST definir y comunicar credenciales iniciales de acceso para entorno de desarrollo controlado.
+- **FR-010**: El sistema MUST proteger los endpoints del CRUD mediante autenticación HTTP Basic contra empleados activos.
+- **FR-011**: El sistema MUST persistir `contrasena` de entrada como `contrasenaHash` y MUST rechazar credenciales inválidas.
+- **FR-022**: El sistema MUST no requerir ni aceptar `clave` como entrada obligatoria en el registro de empleados.
+- **FR-021**: El sistema MUST exponer el CRUD bajo rutas versionadas `/api/v1/empleados` y `/api/v1/empleados/{clave}`.
 - **FR-012**: El sistema MUST persistir la información de empleados en almacenamiento durable.
 - **FR-013**: El sistema MUST permitir configuración por variables de entorno para ejecutar el CRUD en distintos entornos.
 - **FR-014**: El sistema MUST publicar documentación navegable y actualizada de los endpoints del CRUD de empleados.
@@ -124,12 +130,12 @@ Como administrador del sistema, quiero actualizar nombre o teléfono y eliminar 
 
 ### Key Entities *(include if feature involves data)*
 
-- **Empleado**: Representa a un empleado gestionado por el sistema; atributos de negocio: `clave` (identificador único), `nombre` (texto hasta 100), `telefono` (texto hasta 100), `activo` (indica si está disponible operativamente).
-- **Credencial de Acceso**: Representa el par de credenciales usado para autenticar solicitudes al CRUD; atributos de negocio: `usuario`, `password` y permisos de acceso administrativo.
+- **Empleado**: Representa a un empleado gestionado por el sistema; atributos de negocio: `clave` (PK autogenerada e identificador único de autenticación), `nombre` (texto hasta 100), `telefono` (texto hasta 100), `activo` (indica si está disponible operativamente).
+- **Credencial de Acceso**: Se deriva de la entidad Empleado activa; usa `clave` como usuario y `contrasena` validada contra `contrasenaHash`.
 
 ## Assumptions
 
-- La `clave` se captura como texto y es proporcionada por el administrador.
+- La `clave` la genera automáticamente el sistema al registrar un empleado.
 - El alcance del CRUD se limita a un único tipo de usuario operativo (administrador).
 - La paginación del listado es opcional y, cuando se use, el tamaño por página es fijo de 5.
 - La retención de datos sigue la política estándar del proyecto sin eliminación automática.

@@ -4,6 +4,7 @@ import com.ejercicio3.dto.EmpleadoCreateRequest;
 import com.ejercicio3.integration.BaseIntegrationTest;
 import org.junit.jupiter.api.Test;
 import org.springframework.http.MediaType;
+import org.springframework.test.web.servlet.MvcResult;
 
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.httpBasic;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
@@ -16,20 +17,24 @@ class DeleteEmpleadoIntegrationTest extends BaseIntegrationTest {
     @Test
     void shouldDeleteEmpleadoLogicallySuccessfully() throws Exception {
         EmpleadoCreateRequest request = new EmpleadoCreateRequest();
-        request.setClave("EMP001");
         request.setNombre("Juan Perez");
         request.setTelefono("5551234");
+        request.setEmail("delete.ok@ejercicio3.local");
+        request.setContrasena("clave1234");
 
-        mockMvc.perform(post("/api/empleados")
-                        .with(httpBasic("admin", "admin123"))
+        MvcResult createResult = mockMvc.perform(post("/api/v1/empleados")
+                        .with(httpBasic(AUTH_USER, AUTH_PASSWORD))
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(request)))
-                .andExpect(status().isCreated());
+                .andExpect(status().isCreated())
+                .andReturn();
 
-        mockMvc.perform(delete("/api/empleados/EMP001").with(httpBasic("admin", "admin123")))
+        String clave = objectMapper.readTree(createResult.getResponse().getContentAsString()).get("clave").asText();
+
+        mockMvc.perform(delete("/api/v1/empleados/{clave}", clave).with(httpBasic(AUTH_USER, AUTH_PASSWORD)))
                 .andExpect(status().isNoContent());
 
-        mockMvc.perform(get("/api/empleados/EMP001").with(httpBasic("admin", "admin123")))
+        mockMvc.perform(get("/api/v1/empleados/{clave}", clave).with(httpBasic(AUTH_USER, AUTH_PASSWORD)))
                 .andExpect(status().isNotFound());
     }
 }

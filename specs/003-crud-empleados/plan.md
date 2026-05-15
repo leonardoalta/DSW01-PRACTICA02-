@@ -1,7 +1,7 @@
 # Implementation Plan: CRUD de Empleados
 
-**Branch**: `001-crud-empleados` | **Date**: 2026-03-05 | **Spec**: /specs/001-crud-empleados/spec.md
-**Input**: Feature specification from `/specs/001-crud-empleados/spec.md`
+**Branch**: `003-crud-empleados` | **Date**: 2026-03-05 | **Spec**: /specs/003-crud-empleados/spec.md
+**Input**: Feature specification from `/specs/003-crud-empleados/spec.md`
 
 **Note**: This template is filled in by the `/speckit.plan` command. See `.specify/templates/plan-template.md` for the execution workflow.
 
@@ -47,7 +47,7 @@ todos los activos; cuando se envían parámetros, el tamaño de página es 5.
 ### Documentation (this feature)
 
 ```text
-specs/001-crud-empleados/
+specs/003-crud-empleados/
 ├── plan.md
 ├── research.md
 ├── data-model.md

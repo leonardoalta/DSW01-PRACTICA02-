@@ -52,6 +52,7 @@ description: "Task list template for feature implementation"
 - [ ] T002 Initialize [language] project with [framework] dependencies
 - [ ] T003 [P] Configure linting and formatting tools
 - [ ] T004 Configure base runtime and build for Java 17 + Spring Boot 3
+- [ ] T004a [P] If feature includes web UI, initialize Angular LTS workspace and baseline scripts
 
 ---
 
@@ -64,13 +65,16 @@ description: "Task list template for feature implementation"
 Examples of foundational tasks (adjust based on your project):
 
 - [ ] T005 Setup PostgreSQL connectivity and migrations framework
-- [ ] T006 [P] Implement HTTP Basic authentication/authorization framework
+- [ ] T006 [P] Implement authentication/authorization framework based on entidad Empleado (with contrasena segura)
 - [ ] T007 [P] Setup API routing and middleware structure
+- [ ] T007a [P] Define API URL versioning strategy (e.g., `/api/v1/...`) and route base paths
+- [ ] T007b [P] Enforce `Empleado.clave` as database PK and canonical auth identifier
 - [ ] T008 Create base models/entities that all stories depend on
 - [ ] T009 Configure error handling and logging infrastructure
 - [ ] T010 Setup environment configuration management
 - [ ] T011 [P] Provision Docker database runtime (container or compose)
 - [ ] T012 [P] Enable and configure OpenAPI/Swagger documentation
+- [ ] T012a [P] If feature includes frontend, define Angular-to-API integration and environment config
 
 **Checkpoint**: Foundation ready - user story implementation can now begin in parallel
 
@@ -160,6 +164,8 @@ Examples of foundational tasks (adjust based on your project):
 - [ ] TXXX Performance optimization across all stories
 - [ ] TXXX [P] Additional unit tests (if requested) in tests/unit/
 - [ ] TXXX Security hardening
+- [ ] TXXX Validate API versioning consistency across controllers and OpenAPI docs
+- [ ] TXXX Validate Angular frontend compatibility with versioned API routes (if applicable)
 - [ ] TXXX Run quickstart.md validation
 - [ ] TXXX Validate Swagger docs match implemented endpoints
 - [ ] TXXX Validate Docker-based PostgreSQL startup and connectivity

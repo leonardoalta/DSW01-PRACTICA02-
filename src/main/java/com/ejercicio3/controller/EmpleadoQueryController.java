@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping("/api/empleados")
+@RequestMapping("${app.api.base-path:/api/v1}/empleados")
 public class EmpleadoQueryController {
 
     private final EmpleadoQueryService empleadoQueryService;

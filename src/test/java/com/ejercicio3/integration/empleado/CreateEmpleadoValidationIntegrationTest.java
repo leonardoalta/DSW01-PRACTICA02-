@@ -15,12 +15,13 @@ class CreateEmpleadoValidationIntegrationTest extends BaseIntegrationTest {
     @Test
     void shouldReturnBadRequestWhenNombreExceeds100Chars() throws Exception {
         EmpleadoCreateRequest request = new EmpleadoCreateRequest();
-        request.setClave("EMP001");
         request.setNombre("A".repeat(101));
         request.setTelefono("5551234");
+        request.setEmail("nombre.largo@ejercicio3.local");
+        request.setContrasena("clave1234");
 
-        mockMvc.perform(post("/api/empleados")
-                        .with(httpBasic("admin", "admin123"))
+        mockMvc.perform(post("/api/v1/empleados")
+                .with(httpBasic(AUTH_USER, AUTH_PASSWORD))
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(request)))
             .andExpect(status().isBadRequest())
@@ -30,12 +31,13 @@ class CreateEmpleadoValidationIntegrationTest extends BaseIntegrationTest {
         @Test
         void shouldReturnBadRequestWhenTelefonoExceeds100Chars() throws Exception {
         EmpleadoCreateRequest request = new EmpleadoCreateRequest();
-        request.setClave("EMP001");
         request.setNombre("Juan Perez");
         request.setTelefono("1".repeat(101));
+        request.setEmail("telefono.largo@ejercicio3.local");
+        request.setContrasena("clave1234");
 
-        mockMvc.perform(post("/api/empleados")
-                .with(httpBasic("admin", "admin123"))
+        mockMvc.perform(post("/api/v1/empleados")
+            .with(httpBasic(AUTH_USER, AUTH_PASSWORD))
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(objectMapper.writeValueAsString(request)))
             .andExpect(status().isBadRequest())
@@ -43,17 +45,38 @@ class CreateEmpleadoValidationIntegrationTest extends BaseIntegrationTest {
         }
 
         @Test
-        void shouldReturnBadRequestWhenClaveIsBlank() throws Exception {
+        void shouldIgnoreManualClaveSentInPayload() throws Exception {
+        String payload = """
+                {
+                  \"clave\": \"EMP-MANUAL\",
+                  \"nombre\": \"Juan Perez\",
+                  \"telefono\": \"5551234\",
+                                    \"email\": \"manual.payload@ejercicio3.local\",
+                  \"contrasena\": \"clave1234\"
+                }
+                """;
+
+        mockMvc.perform(post("/api/v1/empleados")
+            .with(httpBasic(AUTH_USER, AUTH_PASSWORD))
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(payload))
+            .andExpect(status().isCreated())
+            .andExpect(jsonPath("$.clave").isNotEmpty());
+    }
+
+        @Test
+        void shouldReturnBadRequestWhenContrasenaIsTooShort() throws Exception {
         EmpleadoCreateRequest request = new EmpleadoCreateRequest();
-        request.setClave(" ");
         request.setNombre("Juan Perez");
         request.setTelefono("5551234");
+        request.setEmail("contrasena.corta@ejercicio3.local");
+        request.setContrasena("1234567");
 
-        mockMvc.perform(post("/api/empleados")
-                .with(httpBasic("admin", "admin123"))
+        mockMvc.perform(post("/api/v1/empleados")
+                .with(httpBasic(AUTH_USER, AUTH_PASSWORD))
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(objectMapper.writeValueAsString(request)))
             .andExpect(status().isBadRequest())
             .andExpect(jsonPath("$.code").value("VALIDATION_ERROR"));
-    }
+        }
 }
