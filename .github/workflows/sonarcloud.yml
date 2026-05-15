@@ -6,6 +6,7 @@ on:
     branches: ["main", "dev"]
     types:
       - completed
+  workflow_dispatch:
 
 concurrency:
   group: ${{ github.workflow }}-${{ github.event.workflow_run.head_branch }}
