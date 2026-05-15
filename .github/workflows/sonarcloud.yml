@@ -1,0 +1,50 @@
+name: 02-SonarCloud
+
+on:
+  workflow_run:
+    workflows: ["01-CI"]
+    branches: ["main", "dev"]
+    types:
+      - completed
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.event.workflow_run.head_branch }}
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+  pull-requests: read
+
+jobs:
+  analysis:
+    name: SonarCloud Analysis
+    runs-on: ubuntu-latest
+    if: ${{ github.event.workflow_run.conclusion == 'success' }}
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.workflow_run.head_sha }}
+          fetch-depth: 0
+
+      - name: Set up JDK 17
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '17'
+          cache: maven
+
+      - name: Build and analyze with SonarCloud
+        env:
+          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+        run: |
+          mvn -B -ntp clean verify -DskipTests \
+            org.sonarsource.scanner.maven:sonar-maven-plugin:sonar \
+            -Dsonar.host.url=https://sonarcloud.io \
+            -Dsonar.organization=leonardoalta \
+            -Dsonar.projectKey=leonardoalta_dsw01-practica02 \
+            -Dsonar.sources=src,frontend/src \
+            -Dsonar.exclusions=**/target/**,**/coverage/**,frontend/.angular/**,frontend/dist/**,frontend/node_modules/**,frontend/src/**/*.spec.ts \
+            -Dsonar.tests=src/test,frontend/src \
+            -Dsonar.test.inclusions=src/test/**/*Test.java,frontend/src/**/*.spec.ts
