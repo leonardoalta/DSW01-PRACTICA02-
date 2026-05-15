@@ -64,4 +64,4 @@ jobs:
       - name: Run frontend tests
         env:
           CHROME_BIN: ${{ steps.setup-chrome.outputs.chrome-path }}
-        run: npm test -- --browsers=ChromeHeadless
+        run: npm test -- --browsers=ChromeHeadlessNoSandbox
